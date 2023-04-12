@@ -1,0 +1,137 @@
+[[https://orgmode.org/org.html][Références]]
+
+Le manuel d'Org mode
+Traduction française de la version 9.6
+Copyright © 2004–2023 Free Software Foundation, Inc.
+
+    Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.3 or any later version published by the Free Software Foundation; with no Invariant Sections, with the Front-Cover Texts being “A GNU Manual,” and with the Back-Cover Texts as in (a) below. A copy of the license is included in the section entitled “GNU Free Documentation License.”
+    (a) The FSF’s Back-Cover Text is: “You have the freedom to copy and modify this GNU manual.”
+
+     (a) Le texte de la couverture arrière de la FSF est : "Vous avez la liberté de copier et de modifier ce manuel GNU."
+
+* Table des matières
+
+** 1.Introduction
+
+*** 1.1 Sommaire
+Org Mode est un outil de création et un gestionnaire de listes de ''TODO'' pour GNU Emacs. Il s'appuie sur un langage de balisage léger en texte brut utilisé dans les fichiers portant l'extension ".org".
+
+C'est un outil de création qui vous permet de rédiger des documents structurés et fournit des fonctionnalités d'exportation. Les fichiers org peuvent également être utilisés pour la programmation et /la recherche reproductible/.  Org Mode est aussi un outil de gestion de tâches. Il perment d'organiser vos tâches de manière flexible, que ce soit pour des besoins personnels ou des projets détaillés complexes tout en permettant la journalisation, une présentation détaillées, l'exportation de vos agendas, etc.
+
+Org développe des tâches à partir de fichiers de notes contenant des listes ou des informations sous forme de texte brut. La planification de projet et la gestion des tâches utilisent des métadonnées /qui font partie d'un nœud de plan/. Sur la base de ces données, des entrées spécifiques peuvent être extraites afin de créer des vues d'agenda dynamiques qui intègrent le calendrier et l'agenda Emacs. Org peut être utilisé pour mettre en œuvre des schémas de planification, tels que le système GTD de David Allen.
+
+Les fichiers Org peuvent servir de source unique pour exporter vers de nombreux formats tels que HTML, LaTeX, Open Document et le langage de balisage léger (Markdown). /Les nouveaux backends d'exportation peuvent être dérivés de ceux existants ou définis à partir de zéro/.
+
+Les fichiers Org peuvent inclure des blocs de code source, ce qui rend Org particulièrement adapté à la création de documents techniques avec des exemples de code. Les blocs de code source inclus dans le fichier sont entièrement fonctionnels. Ils peuvent être évalués sur place et leurs résultats peuvent être saisis dans le fichier. /Cela permet de créer un recueil de recherche reproductible en un seul fichier./
+
+Org garde les choses simples. Dès le départ, l'éditeur de texte parait simple à utiliser, mais en même temps, Org Mode offre des fonctionnalités d'une grande capacité en cas de besoin. Org est une boîte à outils complète et complexe. De nombreux utilisateurs n'exécutent en fait qu'une fraction des capacités extraordinaires d'Org Mode.
+
+Tout le travail est réalisé sur des fichiers en texte brute. Org Mode fonctionne dans Emacs qui est disponible sur toutes les principales plates-formes.
+
+Org est hébergé sur un site Web donnant accès à la dernière version du logiciel ainsi qu'à des informations supplémentaires, des questions fréquemment posées (FAQ), des liens vers des didacticiels, etc. Cette page se trouve à https://orgmode.org.
+
+Une version antérieure (7.3) de ce manuel était disponible sous forme de livre de poche auprès de la société d'édition Network Theory Ltd., fermée en 2009.
+
+*** 1.2 Installation
+
+** 1.4
+- Pour ouvrir Emacs en mode minimal = emacs -Q
+- Pour évaluer la source d'une erreur
+
+  
+** 1.5
+*** Conventions
+- *Tags* are case-sensitive. *User-defined* tags are usually written in *lowercase*; *built-in tags* with special meaning are written as they should appear in the document, *usually with all capitals*.
+- User-defined *properties* are *capitalized*; built-in properties with special meaning are written with all capitals
+- *Keywords and blocks* are written in *uppercase* to enhance their readability, but you can use lowercase in your Org files.
+
+  
+* 2.Structure du document
+org-cycle, which is bound to the TAB key
+
+** 2.1 Headlines
+*if you leave at least two empty lines, one empty line remains visible after folding the subtree*, in order to structure the collapsed view
+
+
+** 2.2 Visibility cycling
+*** 2.2.1 Global and local cycling
+- TAB ou org-cycle: expansion de la zone et S-TAB ou global-org-cycle fait l'inverse
+- C-u TAB expansion circulaire
+- C-u C-u TAB (org-set-startup-visibility), retourne à la vision initiale
+- C-u C-u C-u TAB (org-show-all), montre tout, même les tiroirs
+- C-c C-r (org-reveal) retourne au point du curseur actif
+*** 2.2.2 Visibilité initiale
+*** 2.2.3 Catching invisible edits
+
+
+** 2.3 Mouvements
+
+** 2.4 Édition de la structure
+- M-RET: création d'une entête
+  - si fait alors que le curseur est au début de la ligne: l'entête se créer avant
+  - si fait sur une ligne vierge: l'entête se créer à cet endroit
+- C-c C-x C-w (org-cut-subtree): Kill subtree, i.e., remove it from buffer but save in kill ring. With a numeric prefix argument N, kill N sequential subtrees.
+- C-c C-x C-y (org-paste-subtree): Yank subtree from kill ring
+
+** 2.5 Sparse Trees
+
+** 2.6 Plain Lists
+
+** 2.7 Drawers
+:LOGBOOK:
+- Note taken on [2023-04-08 sam 21:07] \\
+  Exemple de note
+:END:
+:Tiroir:
+Pour insérer une note avec la commande C-c C-z et terminer avec C-c C-c
+:end:
+
+** 2.8 Blocks
+- Org mode uses ‘#+BEGIN’ … ‘#+END’ blocks for various purposes from including source code examples
+ #+BEGIN_SRC emacs-lisp
+  (setq sum (+ 4 8))
+ #+END_SRC
+
+ #+RESULTS:
+ : 12
+
+ 
+* 3.Table
+
+** 3.1 Built-in Table Editor
+
+*** Creation and conversion
+1. | forme une ligne verticale
+2. |- forme une ligne horizontale
+3. RET amène une nouvelle ligne
+*** Re-aligning and field motion
+*** Column and row editing
+5. M-Left ou M-Right change l'ordre vertical des colonnes
+   | Nom     | Prénom  |
+   |---------+---------|
+   | Chénier | Martin  |
+   | Asselin | Suzanne |
+   |         |         |
+   |         |         |
+*** Regions
+*** Calculations
+- C-c + fait la somme des colonnes et C-y inscrit la somme dans la colonne
+| Patients | Montants |
+|----------+----------|
+|       30 |     1200 |
+|       28 |     1230 |
+|       58 |     2430 |
+|      116 |     4860 |
+|          |          |
+*** Miscellaneous
+- Importer des tableaux en format txt, csv, tsv
+- M-x org-table-header-line-mode pour fixer la première ligne
+  
+| Mois  | Jour | Patients | Montants   |
+|-------+------+----------+------------|
+| Avril |   12 |       30 | 1 500,00 $ |
+| Mai   |   15 |       28 | 1 200,00 $ |
+
+
+** 3.2 Column Width and Alignment
+
