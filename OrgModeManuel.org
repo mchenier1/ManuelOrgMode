@@ -107,22 +107,22 @@ Pour insérer une note avec la commande C-c C-z et terminer avec C-c C-c
 *** Re-aligning and field motion
 *** Column and row editing
 5. M-Left ou M-Right change l'ordre vertical des colonnes
-   | Nom     | Prénom  |
-   |---------+---------|
-   | Chénier | Martin  |
-   | Asselin | Suzanne |
-   |         |         |
-   |         |         |
+   | Nom    | Prénom |
+   |--------+--------|
+   | Robert | Martin |
+   | Alain  | Robert |
+   |        |        |
+   |        |        |
 *** Regions
 *** Calculations
 - C-c + fait la somme des colonnes et C-y inscrit la somme dans la colonne
-| Patients | Montants |
-|----------+----------|
-|       30 |     1200 |
-|       28 |     1230 |
-|       58 |     2430 |
-|      116 |     4860 |
-|          |          |
+| Nombres | Montants |
+|--------+----------|
+|     30 |     1200 |
+|     28 |     1230 |
+|     58 |     2430 |
+|    116 |     4860 |
+|        |          |
 *** Miscellaneous
 - Importer des tableaux en format txt, csv, tsv
 - M-x org-table-header-line-mode pour fixer la première ligne
