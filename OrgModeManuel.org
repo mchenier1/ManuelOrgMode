@@ -127,10 +127,10 @@ Pour insérer une note avec la commande C-c C-z et terminer avec C-c C-c
 - Importer des tableaux en format txt, csv, tsv
 - M-x org-table-header-line-mode pour fixer la première ligne
   
-| Mois  | Jour | Patients | Montants   |
-|-------+------+----------+------------|
-| Avril |   12 |       30 | 1 500,00 $ |
-| Mai   |   15 |       28 | 1 200,00 $ |
+| Mois  | Jour | Commandes | Montants   |
+|-------+------+-----------+------------|
+| Avril |   12 |        30 | 1 500,00 $ |
+| Mai   |   15 |        28 | 1 200,00 $ |
 
 
 ** 3.2 Column Width and Alignment
