@@ -13,6 +13,7 @@ Copyright © 2004–2023 Free Software Foundation, Inc.
 
 ** 1.Introduction
 
+
 *** 1.1 Sommaire
 Org Mode est un outil de création et un gestionnaire de listes de ''TODO'' pour GNU Emacs. Il s'appuie sur un langage de balisage léger en texte brut utilisé dans les fichiers portant l'extension ".org".
 
@@ -32,52 +33,167 @@ Org est hébergé sur un site Web donnant accès à la dernière version du logi
 
 Une version antérieure (7.3) de ce manuel était disponible sous forme de livre de poche auprès de la société d'édition Network Theory Ltd., fermée en 2009.
 
+
 *** 1.2 Installation
 
-** 1.4
-- Pour ouvrir Emacs en mode minimal = emacs -Q
-- Pour évaluer la source d'une erreur
+Org est inclus dans les distributions de GNU Emacs, vous n'aurez probablement pas besoin de l'installer. La plupart des utilisateurs activeront simplement Org et commenceront à explorer ses fonctionnalités.
+
+Si, pour une raison ou une autre, vous souhaitez installer Org par-dessus cette version pré-packagée, vous pouvez utiliser le système de packages Emacs ou cloner le référentiel git d'Org. Nous vous recommandons fortement de vous en tenir à une seule méthode d'installation.
+
+Lors de l'installation d'Org par-dessus la version pré-emballée, veuillez noter que les versions stables d'Org sont censées être entièrement compatibles avec les trois dernières versions stables d'Emacs, mais pas avec les anciennes versions d'Emacsen.
+
+- *Utilisation du système d'empaquetage Emacs*
+
+  Les distributions récentes d'Emacs incluent un système d'empaquetage qui vous permet d'installer les bibliothèques Elisp. Vous pouvez installer Org à partir du "menu package", avec M-x list-packages. Voir [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Package-Menu.html#Package-Menu][(emacs) Package Menu]].
+  *Important*: Vous devez le faire dans une session où aucun fichier ".org" n'a été visité, c'est-à-dire où aucune fonction intégrée Org n'a été chargée. Sinon, les fonctions de chargement automatique gâcheront l'installation.
+  
+- *Utilisation du référentiel git d'Org*
+
+  Vous pouvez cloner le référentiel d'Org et installer Org comme ceci :
+  $ cd ~/src/
+  $ git clone https://git.savannah.gnu.org/git/emacs/org-mode.git
+  $ cd org-mode/
+  $ make autoloads
+
+  Notez que dans ce cas, « make autoloads » est obligatoire : il définit la version de Org dans « org-version.el » et les chargements automatiques de Org dans « org-loaddefs.el ».
+
+  Assurez-vous de définir correctement le chemin de chargement dans votre fichier d'initialisation Emacs :
+  (add-to-list 'load-path "~/src/org-mode/lisp")
+
+  Vous pouvez également compiler avec « make », générer la documentation avec « make doc », créer une configuration locale avec « make config » et installer Org avec « make install ». Veuillez exécuter « make help » pour obtenir la liste des options de compilation/installation.
+
+  Pour des explications plus détaillées sur le système de construction d'Org, veuillez consulter la page Org Build System sur [[https://orgmode.org/worg/dev/org-build-system.html][Worg]].
+
+- *Installation des packages de contribution de l'organisation d'Org Mode*
+
+  Le référentiel de l'organisation contenait le répertoire "contrib/" pour les modules complémentaires apportés par d'autres. Depuis Org 9.5, le répertoire a été déplacé vers le référentiel org-contrib [[https://git.sr.ht/~bzg/org-contrib][dédié]], que vous pouvez installer séparément en tant que [[https://elpa.nongnu.org/nongnu/org-contrib.html][package]] à partir de NonGNU ELPA.
+
+  Il y a suffisamment de packages de valeur conservés en dehors du référentiel Org. Worg a une liste de [[https://orgmode.org/worg/org-contrib/index.html][paquets org-contrib et externes]], non-exhaustive.
+
+
+*** 1.3 Activation
+
+Les tampons (buffers) en mode Org ont besoin que Font Lock soit activé : c'est la valeur par défaut dans Emacs
+
+Il existe des problèmes de compatibilité entre le mode Org et certains autres packages Elisp [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Key-Binding-Conventions.html#Key-Binding-Conventions][(voir Packages en conflit avec le mode Org)]]. Veuillez prendre le temps de vérifier la liste.
+
+Pour une meilleure expérience, les trois commandes Org org-store-link, org-capture et org-agenda doivent être accessibles n'importe où dans Emacs, pas seulement dans les tampons Org. Pour cela, vous devez les lier à des clés disponibles globalement, comme celles réservées aux utilisateurs [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Key-Binding-Conventions.html#Key-Binding-Conventions][(voir (elisp)Key Binding Conventions)]]. Voici des liaisons suggérées, veuillez modifier les touches à votre guise.
+(global-set-key (kbd "C-c l") #'org-store-link)
+(global-set-key (kbd "C-c a") #'org-agenda)
+(global-set-key (kbd "C-c c") #'org-capture)
+
+Les fichiers avec l'extension '.org' utilisent le mode Org par défaut. Pour activer le mode Org dans un fichier qui n'a pas l'extension ".org", faites en sorte que la première ligne d'un fichier ressemble à ceci:
+(voir le texte sur le site) qui sélectionne le mode Org pour ce tampon quel que soit le nom du fichier. Voir aussi la variable org-insert-mode-line-in-empty-file.
+
+De nombreuses commandes dans Org fonctionnent sur la région si la région est active. Pour l'utiliser, vous devez activer le mode Transient Mark, qui est la valeur par défaut. Si vous ne l'aimez pas, vous pouvez créer une région active en utilisant la souris pour sélectionner une région, ou en appuyant deux fois sur C-SPC avant de déplacer le point.
+
+Si vous n'utilisez pas Font Lock globalement, activez-le dans le tampon Org avec '(add-hook 'org-mode-hook #'turn-on-font-lock)'.
+
+
+*** 1.4 Rétroaction
+
+Si vous rencontrez des problèmes avec Org, ou si vous avez des questions, des remarques ou des idées à ce sujet, veuillez envoyer un e-mail à la liste de diffusion Org emacs-orgmode@gnu.org. Vous pouvez vous inscrire à la liste à partir de cette page Web. Si vous n'êtes pas membre de la liste de diffusion, votre courrier sera transmis à la liste après qu'un modérateur l'aura approuvé. Nous vous demandons de lire et de respecter les directives de communication GNU Kind lors de l'envoi de messages sur cette liste de diffusion. Veuillez prévoir jusqu'à un mois pour la réponse et le suivi si aucune réponse n'est reçue sur le rapport de bogue.
+
+Pour les rapports de bogue, veuillez d'abord essayer de reproduire le bogue avec la dernière version d'Org disponible. Si vous utilisez une version obsolète, il est tout à fait possible que le bogue ait déjà été corrigé. Si le bogue persiste, préparez un rapport et fournissez autant d'informations que possible, y compris les informations de version d'Emacs (M-x emacs-version) et Org (M-x org-version), ainsi que la configuration liée à Org dans le fichier d'initialisation d'Emacs. La façon la plus simple de le faire est d'utiliser la commande:
+M-x org-submit-bug-report <RET>
+qui met toutes ces informations dans un tampon de messagerie Emacs afin que vous n'ayez qu'à ajouter votre description. Si vous n'envoyez pas l'e-mail depuis Emacs, veuillez copier et coller le contenu dans votre programme de messagerie.
+
+Parfois, vous pouvez rencontrer un problème en raison d'une erreur dans la configuration de votre mode Emacs ou Org. Avant de signaler un bogue, il est très utile de démarrer Emacs avec un minimum de personnalisations et de reproduire le problème. Cela vous aide souvent à déterminer si le problème vient de votre personnalisation ou du mode Org lui-même. Vous pouvez démarrer une session minimale typique avec une commande comme dans l'exemple ci-dessous.
+$ emacs -Q -l /path/to/minimal-org.el
+
+Cependant, si vous utilisez le mode Org tel qu'il est distribué avec Emacs, une configuration minimale n'est pas nécessaire. Dans ce cas, il suffit de démarrer Emacs en tant que « emacs -Q ». Le fichier d'installation 'minimal-org.el' peut avoir le contenu comme indiqué ci-dessous.
+;;; Minimal setup to load latest `org-mode'.
+
+;; Activate debugging.
+(setq debug-on-error t
+      debug-on-signal nil
+      debug-on-quit nil)
+
+;; Add latest Org mode to load path.
+(add-to-list 'load-path (expand-file-name "/path/to/org-mode/lisp"))
+
+Si vous utilisez la version en mode Org du référentiel Git, vous pouvez démarrer une session minimale à l'aide de make.
+# Bare Emacs
+make repro
+# or pass extra arguments
+make repro REPRO_ARGS="-l /path/to/minimal/config.el /tmp/bug.org"
+
+Si une erreur se produit, un « backtrace » peut être très utile—voir ci-dessous comment en créer un. Souvent, un petit fichier d'exemple est utile, accompagné d'informations claires sur:
+
+Qu'avez-vous exactement fait?
+À quoi vous attendiez-vous ?
+Que s'est-il passé à la place ?
+Merci de contribuer à l'amélioration de ce programme.
+
+*Comment créer un ''backtrace'' utile*
+
+Si travailler avec Org produit une erreur avec un message que vous ne comprenez pas, vous avez peut-être rencontré un bogue. La meilleure façon de signaler cela est de fournir, en plus de ce qui a été mentionné ci-dessus, un backtrace. Il s'agit d'informations du débogueur intégré indiquant où et comment l'erreur s'est produite. Voici comment produire un ''backtrace'':
+
+1. Rechargez les versions non compilées de tous les fichiers Lisp en mode Org. Le backtrace contient beaucoup plus d'informations s'il est produit avec du code non compilé. Pour ce faire, utilisez:
+C-u M-x org-reload <RET> ou, depuis le menu : Org → Refresh/Reload → Reload Org uncompiled.
+
+2. Ensuite, activez le débogueur:
+M-x toggle-debug-on-error <RET> ou, depuis le menu : Options → Enter Debugger on Error.
+
+3. Faites tout ce que vous avez à faire pour atteindre l'erreur. N'oubliez pas de documenter les étapes que vous franchissez.
+
+4. Lorsque vous rencontrez l'erreur, un tampon "* Backtrace *" apparaît à l'écran. Enregistrez ce tampon dans un fichier, par exemple en utilisant C-x C-w, et joignez-le à votre rapport de bogue.
+
+Veuillez envisager de vous inscrire à la liste de diffusion afin de minimiser le travail des modérateurs de la liste de diffusion.
+
 
   
-** 1.5
-*** Conventions
-- *Tags* are case-sensitive. *User-defined* tags are usually written in *lowercase*; *built-in tags* with special meaning are written as they should appear in the document, *usually with all capitals*.
-- User-defined *properties* are *capitalized*; built-in properties with special meaning are written with all capitals
-- *Keywords and blocks* are written in *uppercase* to enhance their readability, but you can use lowercase in your Org files.
+*** 1.5 Conventions de composition utilisées dans ce manuel
+
+*- TODO keywords, tags, properties, etc.*
+
+Org utilise divers éléments syntaxiques : mots-clés TODO, tags (balises), noms de propriétés, mots-clés, blocs, etc. Dans ce manuel, nous utilisons les conventions suivantes :
+
+Les mots clés TODO sont écrits en majuscules, même s'ils sont définis par l'utilisateur Ex: "PROJET" "TODO" "ATTENTE"
+
+Les balises (tags) sont sensibles à la casse. Les balises définies par l'utilisateur sont généralement écrites en minuscules; les balises intégrées ayant une signification particulière sont écrites telles qu'elles doivent apparaître dans le document, généralement en majuscules Ex: "travail" "ARCHIVES"
+
+Les propriétés définies par l'utilisateur sont en majuscules; les propriétés intégrées ayant une signification particulière sont écrites en majuscules Ex: "PRIORITÉ"
+
+Les mots-clés et les blocs sont écrits en majuscules pour améliorer leur lisibilité, mais vous pouvez utiliser des minuscules dans vos fichiers Org Ex: "TITLE" "BEGIN...END"
+
+*- Raccourcis clavier et commandes*
+
+Le manuel liste à la fois les touches et les commandes correspondantes pour accéder à une fonctionnalité. Le mode Org utilise souvent la même touche pour différentes fonctions, selon le contexte. La commande liée à ces clés a un nom générique, comme org-metaright. Dans le manuel, nous donnerons, dans la mesure du possible, la fonction appelée en interne par la commande générique. Par exemple, dans le chapitre sur la structure du document, M-RIGHT sera répertorié pour appeler org-do-demote, tandis que dans le chapitre sur les tables, il sera répertorié pour appeler org-table-move-column-right.
 
   
-* 2.Structure du document
-org-cycle, which is bound to the TAB key
+** 2.Structure du document
 
-** 2.1 Headlines
+
+*** 2.1 Entêtes
 *if you leave at least two empty lines, one empty line remains visible after folding the subtree*, in order to structure the collapsed view
 
 
-** 2.2 Visibility cycling
-*** 2.2.1 Global and local cycling
+*** 2.2 Visibility cycling
+**** 2.2.1 Global and local cycling
 - TAB ou org-cycle: expansion de la zone et S-TAB ou global-org-cycle fait l'inverse
 - C-u TAB expansion circulaire
 - C-u C-u TAB (org-set-startup-visibility), retourne à la vision initiale
 - C-u C-u C-u TAB (org-show-all), montre tout, même les tiroirs
 - C-c C-r (org-reveal) retourne au point du curseur actif
-*** 2.2.2 Visibilité initiale
-*** 2.2.3 Catching invisible edits
+**** 2.2.2 Visibilité initiale
+**** 2.2.3 Catching invisible edits
 
 
-** 2.3 Mouvements
+*** 2.3 Mouvements
 
-** 2.4 Édition de la structure
+*** 2.4 Édition de la structure
 - M-RET: création d'une entête
   - si fait alors que le curseur est au début de la ligne: l'entête se créer avant
   - si fait sur une ligne vierge: l'entête se créer à cet endroit
 - C-c C-x C-w (org-cut-subtree): Kill subtree, i.e., remove it from buffer but save in kill ring. With a numeric prefix argument N, kill N sequential subtrees.
 - C-c C-x C-y (org-paste-subtree): Yank subtree from kill ring
 
-** 2.5 Sparse Trees
+*** 2.5 Sparse Trees
 
-** 2.6 Plain Lists
+*** 2.6 Plain Lists
 
-** 2.7 Drawers
+*** 2.7 Drawers
 :LOGBOOK:
 - Note taken on [2023-04-08 sam 21:07] \\
   Exemple de note
@@ -86,7 +202,7 @@ org-cycle, which is bound to the TAB key
 Pour insérer une note avec la commande C-c C-z et terminer avec C-c C-c
 :end:
 
-** 2.8 Blocks
+*** 2.8 Blocks
 - Org mode uses ‘#+BEGIN’ … ‘#+END’ blocks for various purposes from including source code examples
  #+BEGIN_SRC emacs-lisp
   (setq sum (+ 4 8))
@@ -96,16 +212,16 @@ Pour insérer une note avec la commande C-c C-z et terminer avec C-c C-c
  : 12
 
  
-* 3.Table
+** 3.Table
 
-** 3.1 Built-in Table Editor
+*** 3.1 Built-in Table Editor
 
-*** Creation and conversion
+**** Creation and conversion
 1. | forme une ligne verticale
 2. |- forme une ligne horizontale
 3. RET amène une nouvelle ligne
-*** Re-aligning and field motion
-*** Column and row editing
+**** Re-aligning and field motion
+**** Column and row editing
 5. M-Left ou M-Right change l'ordre vertical des colonnes
    | Nom    | Prénom |
    |--------+--------|
@@ -113,8 +229,8 @@ Pour insérer une note avec la commande C-c C-z et terminer avec C-c C-c
    | Alain  | Robert |
    |        |        |
    |        |        |
-*** Regions
-*** Calculations
+**** Regions
+**** Calculations
 - C-c + fait la somme des colonnes et C-y inscrit la somme dans la colonne
 | Nombres | Montants |
 |--------+----------|
@@ -123,7 +239,7 @@ Pour insérer une note avec la commande C-c C-z et terminer avec C-c C-c
 |     58 |     2430 |
 |    116 |     4860 |
 |        |          |
-*** Miscellaneous
+**** Miscellaneous
 - Importer des tableaux en format txt, csv, tsv
 - M-x org-table-header-line-mode pour fixer la première ligne
   
@@ -133,5 +249,5 @@ Pour insérer une note avec la commande C-c C-z et terminer avec C-c C-c
 | Mai   |   15 |        28 | 1 200,00 $ |
 
 
-** 3.2 Column Width and Alignment
+*** 3.2 Column Width and Alignment
 
